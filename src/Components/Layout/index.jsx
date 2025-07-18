@@ -349,24 +349,24 @@ function SideBarOptions({
         setSelectedChat(null);
     };
 
-        const handleDeleteChat = async () => {
+    const handleDeleteChat = async () => {
         const chatId = selectedChat?.chatId;
         const chatName = selectedChat?.chatName;
-        
+
         try {
             // Delete from database
             await chatDB.deleteChatByChatId(chatId);
-            
+
             // Remove from chatList state
-            setChatList((prevChatList) => 
+            setChatList((prevChatList) =>
                 prevChatList.filter((chat) => chat.chatId !== chatId)
             );
-            
+
             console.log(`Successfully deleted chat: ${chatName} (${chatId})`);
         } catch (error) {
             console.error("Error deleting chat:", error);
         }
-        
+
         handleMenuClose();
     };
 
@@ -469,8 +469,13 @@ function SideBarOptions({
                                             fontSize: "13px",
                                             fontWeight: 400,
                                             color: "#e5e5e5",
+                                            overflow: "hidden",
+                                            textOverflow: "ellipsis",
+                                            whiteSpace: "nowrap",
+                                            maxWidth: "180px", // Adjust based on your sidebar width
                                         },
                                     }}
+                                    title={chat.chatName} // Shows full text on hover
                                 />
                                 <IconButton
                                     className="chat-menu-button"

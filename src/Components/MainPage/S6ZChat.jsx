@@ -18,6 +18,7 @@ export default function ChatPlayground() {
     const controllerRef = useRef(null);
     const [chatTitle, setChatTitle] = useState(null);
     const chatListRef = useRef(null); // Add ref for chat list
+    const textEditorRef = useRef(null); // Add ref for text editor
 
     useEffect(() => {
         async function getChatIdAndUpdateChatItems() {
@@ -142,6 +143,8 @@ export default function ChatPlayground() {
         if (chatItems.length && chatItems[chatItems.length - 1].role === "user")
             fetchMessages();
 
+        scrollToBottom();
+
         function updateChatDB() {
             timer = setTimeout(async () => {
                 const isExistingChat = await chatDB.chatIdExists(chatId);
@@ -161,6 +164,18 @@ export default function ChatPlayground() {
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [chatItems]);
+
+    // Focus text editor when processing finishes
+    useEffect(() => {
+        if (!isProcessingQuery && textEditorRef.current) {
+            // Small delay to ensure the textarea is enabled before focusing
+            const focusTimer = setTimeout(() => {
+                textEditorRef.current?.focus();
+            }, 200);
+
+            return () => clearTimeout(focusTimer);
+        }
+    }, [isProcessingQuery]);
 
     return (
         <div
@@ -217,6 +232,7 @@ export default function ChatPlayground() {
                 </div>
             </div>
             <TextEditor
+                ref={textEditorRef}
                 handleRun={handleRun}
                 input={prompt}
                 setInput={setPrompt}
@@ -230,14 +246,3 @@ export default function ChatPlayground() {
 export function generateUniqueId() {
     return crypto.randomUUID();
 }
-
-// async function useChatItems() {
-//     const [chatItems, setChatItems] = useState([]);
-//     // Get chatId from URL parameters
-//     const CHAT_ID = generateUniqueId();
-//     if (typeof window !== "undefined") {
-//         const params = new URLSearchParams(window.location.search);
-//         CHAT_ID = params.get("chatId");
-//     }
-//     await chatDB.getChatItemsById(CHAT_ID);
-// }

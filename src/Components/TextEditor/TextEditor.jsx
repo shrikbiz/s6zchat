@@ -1,11 +1,11 @@
-import React from "react";
+import React, { forwardRef } from "react";
 
-export default function TextEditor({
+const TextEditor = forwardRef(({
     input,
     handleRun,
     setInput,
     isProcessingQuery,
-}) {
+}, ref) => {
     return (
         <div
             style={{
@@ -19,6 +19,7 @@ export default function TextEditor({
             }}
         >
             <textarea
+                ref={ref}
                 name="prompt"
                 id="prompt"
                 value={input}
@@ -105,4 +106,6 @@ export default function TextEditor({
             </button>
         </div>
     );
-}
+});
+
+export default TextEditor;

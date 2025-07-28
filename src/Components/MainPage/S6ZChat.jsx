@@ -10,7 +10,14 @@ import { fetchAndDecodeResponse } from "@components/API";
 
 export default function ChatPlayground() {
     const [chatId, setChatId] = useState(null);
-    const [selectedModel, setSelectedModel] = useState(MODELS.openAI); // Default to OpenAI
+    const [selectedModel, setSelectedModel] = useState(() => {
+        // Try to get the selected model from localStorage
+        const storedModel = localStorage.getItem("selectedModel");
+        // If a valid model is stored, use it; otherwise default to OpenAI
+        return storedModel && Object.values(MODELS).includes(storedModel)
+            ? storedModel
+            : MODELS.openAI;
+    });
 
     const [chatItems, setChatItems] = useState([]);
     const [prompt, setPrompt] = useState("");
@@ -19,6 +26,11 @@ export default function ChatPlayground() {
     const [chatTitle, setChatTitle] = useState(null);
     const chatListRef = useRef(null); // Add ref for chat list
     const textEditorRef = useRef(null); // Add ref for text editor
+
+    // Save selected model to localStorage whenever it changes
+    useEffect(() => {
+        localStorage.setItem("selectedModel", selectedModel);
+    }, [selectedModel]);
 
     useEffect(() => {
         async function getChatIdAndUpdateChatItems() {

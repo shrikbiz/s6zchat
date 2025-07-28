@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { CircularProgress } from "@mui/material";
 import GradientText from "@components/Animations/GradientText";
 import Threads from "@components/Animations/Threads";
-import { APP_NAME } from "@components/config";
+import config from "@components/config";
 
 const WelcomeScreen = () => {
     const [isLoading, setIsLoading] = useState(true);
@@ -86,7 +86,7 @@ const WelcomeScreen = () => {
                     showBorder={false}
                     className="custom-class"
                 >
-                    <h1>Welcome to {APP_NAME}</h1>
+                    <h1>Welcome to {config.app.name}</h1>
                 </GradientText>
             </div>
         </div>

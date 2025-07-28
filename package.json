@@ -19,7 +19,9 @@
     "markdown-to-jsx": "^7.7.10",
     "marked": "^16.0.0",
     "ogl": "^1.0.11",
+    "openai": "^5.10.2",
     "prettier": "^3.6.2",
+    "prismjs": "^1.30.0",
     "react": "^19.1.0",
     "react-app-rewired": "^2.2.1",
     "react-dom": "^19.1.0",
@@ -32,7 +34,8 @@
     "start": "react-app-rewired start",
     "build": "react-app-rewired build",
     "test": "react-app-rewired test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "setup-env": "node setup-env.js"
   },
   "eslintConfig": {
     "extends": [

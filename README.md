@@ -1,4 +1,43 @@
-# Getting Started with Create React App
+# S6ZChat
+
+A modern chat application built with React that supports multiple AI providers including OpenAI and Ollama.
+
+## Environment Setup
+
+Before running the application, you need to set up your environment variables. Create a `.env` file in the root directory with the following variables:
+
+```bash
+# OpenAI API Configuration
+REACT_APP_OPENAI_API_KEY=your_openai_api_key_here
+
+# Google Gemini API Configuration (optional)
+REACT_APP_GEMINI_API_KEY=your_gemini_api_key_here
+
+# Ollama Configuration
+REACT_APP_OLLAMA_BASE_URL=http://localhost:11434
+
+# App Configuration
+REACT_APP_APP_NAME=S6ZChat
+REACT_APP_APP_VERSION=0.1.0
+```
+
+### Required Environment Variables
+
+- `REACT_APP_OPENAI_API_KEY`: Your OpenAI API key (required for OpenAI integration)
+- `REACT_APP_OLLAMA_BASE_URL`: Ollama server URL (defaults to http://localhost:11434)
+
+### Optional Environment Variables
+
+- `REACT_APP_GEMINI_API_KEY`: Your Google Gemini API key (for future Gemini integration)
+- `REACT_APP_APP_NAME`: Application name (defaults to "S6ZChat")
+- `REACT_APP_APP_VERSION`: Application version (defaults to "0.1.0")
+
+### Getting API Keys
+
+1. **OpenAI API Key**: Visit [OpenAI Platform](https://platform.openai.com/api-keys) to create an API key
+2. **Google Gemini API Key**: Visit [Google AI Studio](https://makersuite.google.com/app/apikey) to create an API key
+
+## Getting Started
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 

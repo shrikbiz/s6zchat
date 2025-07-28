@@ -6,7 +6,7 @@
 
 /* Style for code blocks */
 .custom-pre {
-    background-color: #131313;
+    background-color: #2d2d2d;
     color: #f8f8f2;
     padding: 1rem;
     border-radius: 8px;
@@ -14,6 +14,21 @@
     white-space: pre-wrap; /* Allow code to wrap to next line */
     word-break: break-all; /* Break long words/lines in code */
     max-width: 100%; /* Prevent overflow */
+}
+
+/* Prism.js code block styling */
+.markdown-content pre[class*="language-"] {
+    background-color: #2d2d2d;
+    border-radius: 8px;
+    padding: 1rem;
+    overflow-x: auto;
+    margin: 1rem 0;
+}
+
+.markdown-content code[class*="language-"] {
+    font-family: 'Fira Code', 'Monaco', 'Consolas', 'Liberation Mono', 'Courier New', monospace;
+    font-size: 14px;
+    line-height: 1.5;
 }
 
 /* Inline code */

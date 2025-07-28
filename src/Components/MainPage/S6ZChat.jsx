@@ -1,13 +1,11 @@
 import { useEffect, useState, useRef } from "react";
-import {
-    decodeAndStreamResponse,
-    getTitleForChat,
-    requestOllama,
-} from "@components/util";
 import TextEditor from "@components/TextEditor/TextEditor";
 import WelcomeScreen from "@components/Welcome";
 import ChatList from "@components/ChatItems";
 import chatDB from "@components/ChatDB";
+import { getOptsForTitle, MODELS } from "@components/API/config";
+import { getTitleForChat } from "@components/API/ollama";
+import { fetchAndDecodeResponse } from "@components/API";
 
 export default function ChatPlayground() {
     const [chatId, setChatId] = useState(null);
@@ -44,7 +42,8 @@ export default function ChatPlayground() {
                     }
                     scrollToBottom();
                 } else {
-                    setChatId(generateUniqueId());
+                    // Use the new unique chatId generator
+                    generateTrulyUniqueChatId().then(setChatId);
                 }
             }
         }
@@ -75,7 +74,11 @@ export default function ChatPlayground() {
         async function fetchTitle() {
             isFetching = true;
             const firstQuery = chatItems[0].content;
-            const title = await getTitleForChat(firstQuery);
+            // Model parameter for getOptsForTitle should be dynamic.
+            // TODO: Set model parameter as dynamic.
+            const title = await getTitleForChat(
+                getOptsForTitle(firstQuery, MODELS.ollama)
+            );
             setChatTitle(title);
 
             //-----
@@ -116,13 +119,20 @@ export default function ChatPlayground() {
             isLoading: true,
             isStreaming: true,
         };
+        // const imageChat
         setChatItems((prev) => [...prev, newAgentResponse]);
 
         try {
             scrollToBottom();
-            const response = await requestOllama(chatItems, controller);
-            decodeAndStreamResponse(
-                response,
+
+            // const response = await requestOllama(chatItems, controller);
+            // decodeAndStreamResponse();
+
+            await fetchAndDecodeResponse(
+                chatItems,
+                MODELS.openAI,
+                // MODELS.ollama,
+                controller,
                 setChatItems,
                 setIsProcessingQuery
             );
@@ -242,7 +252,13 @@ export default function ChatPlayground() {
     );
 }
 
-/** Generates unique ID for the chat */
-export function generateUniqueId() {
-    return crypto.randomUUID();
+/** Generates a truly unique ID for the chat by checking the DB */
+async function generateTrulyUniqueChatId() {
+    let id;
+    let exists = true;
+    while (exists) {
+        id = crypto.randomUUID();
+        exists = await chatDB.chatIdExists(id);
+    }
+    return id;
 }

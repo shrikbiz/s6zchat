@@ -2,6 +2,7 @@ import { useEffect, useState, useRef } from "react";
 import TextEditor from "@components/TextEditor/TextEditor";
 import WelcomeScreen from "@components/Welcome";
 import ChatList from "@components/ChatItems";
+import ModelSelector from "./ModelSelector";
 import chatDB from "@components/ChatDB";
 import { getOptsForTitle, MODELS } from "@components/API/config";
 import { getTitleForChat } from "@components/API/ollama";
@@ -9,6 +10,7 @@ import { fetchAndDecodeResponse } from "@components/API";
 
 export default function ChatPlayground() {
     const [chatId, setChatId] = useState(null);
+    const [selectedModel, setSelectedModel] = useState(MODELS.openAI); // Default to OpenAI
 
     const [chatItems, setChatItems] = useState([]);
     const [prompt, setPrompt] = useState("");
@@ -74,10 +76,9 @@ export default function ChatPlayground() {
         async function fetchTitle() {
             isFetching = true;
             const firstQuery = chatItems[0].content;
-            // Model parameter for getOptsForTitle should be dynamic.
-            // TODO: Set model parameter as dynamic.
+            // Use the selected model for title generation
             const title = await getTitleForChat(
-                getOptsForTitle(firstQuery, MODELS.ollama)
+                getOptsForTitle(firstQuery, selectedModel)
             );
             setChatTitle(title);
 
@@ -130,8 +131,7 @@ export default function ChatPlayground() {
 
             await fetchAndDecodeResponse(
                 chatItems,
-                MODELS.openAI,
-                // MODELS.ollama,
+                selectedModel,
                 controller,
                 setChatItems,
                 setIsProcessingQuery
@@ -198,6 +198,10 @@ export default function ChatPlayground() {
                 color: "#e5e5e5", // light text for contrast
             }}
         >
+            <ModelSelector
+                selectedModel={selectedModel}
+                onModelChange={setSelectedModel}
+            />
             <div
                 style={{
                     position: "relative",

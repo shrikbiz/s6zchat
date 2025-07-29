@@ -120,6 +120,31 @@ class ChatDB extends Dexie {
     async deleteChatByChatId(chatId) {
         await this.chats.where("chatId").equals(chatId).delete();
     }
+
+    /**
+     * Delete all chats from the database
+     * @returns {Promise<void>}
+     */
+    async deleteAllChats() {
+        await this.chats.clear();
+    }
+
+    /**
+     * Search chats by title or chatItem content (case-insensitive)
+     * @param {string} query
+     * @returns {Promise<Array<{chatId: string, chatName: string, chatItem: Array, createdOn: number}>>}
+     */
+    async searchChats(query) {
+        const lowerQuery = query.toLowerCase();
+        const allChats = await this.chats.toArray();
+        return allChats.filter(chat => {
+            const titleMatch = chat.chatName && chat.chatName.toLowerCase().includes(lowerQuery);
+            const itemMatch = chat.chatItem && chat.chatItem.some(item =>
+                item.content && item.content.toLowerCase().includes(lowerQuery)
+            );
+            return titleMatch || itemMatch;
+        });
+    }
 }
 
 const chatDB = new ChatDB();

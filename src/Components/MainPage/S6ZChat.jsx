@@ -2,7 +2,7 @@ import { useEffect, useState, useRef } from "react";
 import TextEditor from "@components/TextEditor/TextEditor";
 import WelcomeScreen from "@components/Welcome";
 import ChatList from "@components/ChatItems";
-import ModelSelector from "./ModelSelector";
+import ModelSelector from "../ModelSelector";
 import chatDB from "@components/ChatDB";
 import { getOptsForTitle, MODELS } from "@components/API/config";
 import { getTitleForChat } from "@components/API/ollama";
@@ -90,7 +90,7 @@ export default function ChatPlayground() {
             const firstQuery = chatItems[0].content;
             // Use the selected model for title generation
             const title = await getTitleForChat(
-                getOptsForTitle(firstQuery, selectedModel)
+                getOptsForTitle(firstQuery, MODELS.ollama)
             );
             setChatTitle(title);
 
@@ -186,6 +186,17 @@ export default function ChatPlayground() {
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [chatItems]);
+
+    // Update the URL to include the chatId when a new chat is created
+    useEffect(() => {
+        if (chatId) {
+            const currentPath = window.location.pathname;
+            const expectedPath = `/chat/${chatId}`;
+            if (currentPath !== expectedPath) {
+                window.history.replaceState(null, '', expectedPath);
+            }
+        }
+    }, [chatId]);
 
     // Focus text editor when processing finishes
     useEffect(() => {

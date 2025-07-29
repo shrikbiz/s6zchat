@@ -10,12 +10,20 @@ import {
     IconButton,
     Menu,
     MenuItem,
+    Modal,
+    TextField,
+    List as MUIList,
+    ListItem as MUIListItem,
+    ListItemText as MUIListItemText,
+    Box as MUIBox,
+    Typography,
 } from "@mui/material";
 import {
     Settings as SettingsIcon,
     ViewSidebarRounded,
     AddComment,
     MoreVert,
+    Search as SearchIcon,
 } from "@mui/icons-material";
 import CompanyIcon from "../CompanyIcon";
 import chatDB from "../ChatDB";
@@ -50,6 +58,15 @@ export default function Layout({
     const [isMiniNavButtonFocused, setIsMiniNavButtonFocused] = useState(false);
     // Add chatSessionKey state for remounting S6ZChat
     const [chatSessionKey, setChatSessionKey] = useState(() => Date.now());
+    const [isSearchOpen, setIsSearchOpen] = useState(false);
+    const [searchQuery, setSearchQuery] = useState("");
+    const [searchResults, setSearchResults] = useState([]);
+    const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+
+    // Extracted function to trigger a new chat (now only updates state)
+    const triggerNewChat = () => {
+        setChatSessionKey(Date.now());
+    };
 
     // Infinite scroll handler
     const handleScroll = (e) => {
@@ -65,22 +82,46 @@ export default function Layout({
         }
     };
 
-    // Main navigation items (top of sidebar)
+    // Add Search to mainNavigationItems
     const mainNavigationItems = [
         {
             icon: <AddComment />,
-            text: "New Chat",
+            text: "New chat",
             action: () => {
                 const path = window.location.pathname.replace(
                     /\/chat(\/[^/]*)?$/,
                     ""
                 );
                 window.history.replaceState({}, "", `${path}${"/chat"}`);
-
-                setChatSessionKey(Date.now());
+                triggerNewChat();
             },
         },
+        {
+            icon: <SearchIcon />,
+            text: "Search",
+            action: () => setIsSearchOpen(true),
+        },
     ];
+
+    // Search logic
+    const handleSearch = async (query) => {
+        setSearchQuery(query);
+        if (query.trim()) {
+            const results = await chatDB.searchChats(query);
+            setSearchResults(results);
+        } else {
+            setSearchResults([]);
+        }
+    };
+
+    const handleSelectChat = (chatId) => {
+        setIsSearchOpen(false);
+        setSearchQuery("");
+        setSearchResults([]);
+        const path = window.location.pathname.replace(/\/chat(\/[^/]*)?$/, "");
+        window.history.replaceState({}, "", `${path}/chat/${chatId}`);
+        triggerNewChat();
+    };
 
     // Toggle sidebar drawer open/close
     const handleDrawerToggle = () => setIsDrawerOpen(!isDrawerOpen);
@@ -132,7 +173,7 @@ export default function Layout({
                     <SideBarOptions
                         chatList={chatList}
                         handleScroll={handleScroll}
-                        setChatSessionKey={setChatSessionKey}
+                        triggerNewChat={triggerNewChat}
                         mainNavigationItems={mainNavigationItems}
                         setChatList={setChatList}
                     />
@@ -149,7 +190,7 @@ export default function Layout({
                         }}
                     />
 
-                    <SideBarFooter />
+                    <SideBarFooter setIsSettingsOpen={setIsSettingsOpen} />
                 </Box>
             </StyledDrawer>
 
@@ -157,6 +198,224 @@ export default function Layout({
             <MainContent>
                 {React.cloneElement(children, { key: chatSessionKey })}
             </MainContent>
+
+            {/* Search Modal */}
+            <Modal open={isSearchOpen} onClose={() => setIsSearchOpen(false)}>
+                <MUIBox
+                    sx={{
+                        position: "absolute",
+                        top: "50%",
+                        left: "50%",
+                        transform: "translate(-50%, -50%)",
+                        width: {
+                            xs: "90vw",
+                            sm: "70vw",
+                            md: "60vw",
+                            lg: "50vw",
+                        },
+                        maxWidth: 600,
+                        minWidth: 300,
+                        height: { xs: "70vh", sm: "60vh", md: "60vh" },
+                        bgcolor: "#23242a", // dark background
+                        color: "#e5e5e5", // light text
+                        boxShadow: 24,
+                        p: 2,
+                        borderRadius: 2,
+                        outline: "none",
+                        display: "flex",
+                        flexDirection: "column",
+                    }}
+                >
+                    <Box sx={{ mb: 2, display: 'flex', alignItems: 'center' }}>
+                        <SearchIcon sx={{ color: '#e5e5e5', mr: 1 }} />
+                        <Typography
+                            variant="h6"
+                            sx={{ color: "#e5e5e5", fontWeight: 600 }}
+                        >
+                            Search chats
+                        </Typography>
+                    </Box>
+                    <TextField
+                        autoFocus
+                        fullWidth
+                        placeholder="Search chats..."
+                        value={searchQuery}
+                        onChange={(e) => handleSearch(e.target.value)}
+                        sx={{
+                            mb: 2,
+                            input: { color: "#e5e5e5", background: "#23242a" },
+                            label: { color: "#b0b0b0" },
+                            "& .MuiOutlinedInput-root": {
+                                "& fieldset": { borderColor: "#444654" },
+                                "&:hover fieldset": { borderColor: "#40ffaa" },
+                                "&.Mui-focused fieldset": {
+                                    borderColor: "#40ffaa",
+                                },
+                            },
+                        }}
+                        InputLabelProps={{ style: { color: "#b0b0b0" } }}
+                    />
+                    <MUIList
+                        sx={{
+                            flex: 1,
+                            overflowY: "auto",
+                            background: "transparent",
+                            p: 0,
+                            mb: 0,
+                        }}
+                    >
+                        {searchQuery ? (
+                            searchResults.length === 0 ? (
+                                <MUIListItem>
+                                    <MUIListItemText primary="No results found" />
+                                </MUIListItem>
+                            ) : (
+                                searchResults.map((chat) => (
+                                    <MUIListItem
+                                        button
+                                        key={chat.chatId}
+                                        onClick={() =>
+                                            handleSelectChat(chat.chatId)
+                                        }
+                                        sx={{
+                                            background: "#23242a",
+                                            "&:hover": {
+                                                background: "#2a2b32",
+                                            },
+                                        }}
+                                    >
+                                        <MUIListItemText
+                                            primary={
+                                                chat.chatName || "Untitled Chat"
+                                            }
+                                            secondary={
+                                                chat.chatItem &&
+                                                chat.chatItem.length
+                                                    ? chat.chatItem[0].content.slice(
+                                                          0,
+                                                          40
+                                                      )
+                                                    : ""
+                                            }
+                                            primaryTypographyProps={{
+                                                color: "#e5e5e5",
+                                                fontSize: 15,
+                                                fontWeight: 500,
+                                                sx: {
+                                                    overflow: "hidden",
+                                                    textOverflow: "ellipsis",
+                                                    whiteSpace: "nowrap",
+                                                },
+                                            }}
+                                            secondaryTypographyProps={{
+                                                color: "#b0b0b0",
+                                                fontSize: 13,
+                                                sx: {
+                                                    overflow: "hidden",
+                                                    textOverflow: "ellipsis",
+                                                    whiteSpace: "nowrap",
+                                                },
+                                            }}
+                                        />
+                                    </MUIListItem>
+                                ))
+                            )
+                        ) : (
+                            chatList.map((chat) => (
+                                <MUIListItem
+                                    button
+                                    key={chat.chatId}
+                                    onClick={() =>
+                                        handleSelectChat(chat.chatId)
+                                    }
+                                    sx={{
+                                        background: "#23242a",
+                                        "&:hover": { background: "#2a2b32" },
+                                    }}
+                                >
+                                    <MUIListItemText
+                                        primary={
+                                            chat.chatName || "Untitled Chat"
+                                        }
+                                        secondary={
+                                            chat.chatItem &&
+                                            chat.chatItem.length
+                                                ? chat.chatItem[0].content.slice(
+                                                      0,
+                                                      40
+                                                  )
+                                                : ""
+                                        }
+                                        primaryTypographyProps={{
+                                            color: "#e5e5e5",
+                                            fontSize: 15,
+                                            fontWeight: 500,
+                                            sx: {
+                                                overflow: "hidden",
+                                                textOverflow: "ellipsis",
+                                                whiteSpace: "nowrap",
+                                            },
+                                        }}
+                                        secondaryTypographyProps={{
+                                            color: "#b0b0b0",
+                                            fontSize: 13,
+                                            sx: {
+                                                overflow: "hidden",
+                                                textOverflow: "ellipsis",
+                                                whiteSpace: "nowrap",
+                                            },
+                                        }}
+                                    />
+                                </MUIListItem>
+                            ))
+                        )}
+                    </MUIList>
+                </MUIBox>
+            </Modal>
+
+            {/* Settings Modal */}
+            <Modal
+                open={isSettingsOpen}
+                onClose={() => setIsSettingsOpen(false)}
+            >
+                <MUIBox
+                    sx={{
+                        position: "absolute",
+                        top: "50%",
+                        left: "50%",
+                        transform: "translate(-50%, -50%)",
+                        width: {
+                            xs: "90vw",
+                            sm: "70vw",
+                            md: "60vw",
+                            lg: "50vw",
+                        },
+                        maxWidth: 600,
+                        minWidth: 300,
+                        height: { xs: "70vh", sm: "60vh", md: "60vh" },
+                        bgcolor: "#23242a",
+                        color: "#e5e5e5",
+                        boxShadow: 24,
+                        p: 3,
+                        borderRadius: 2,
+                        outline: "none",
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "flex-start",
+                    }}
+                >
+                    <Box sx={{ display: "flex", alignItems: "center", mb: 2 }}>
+                        <SettingsIcon sx={{ color: "#e5e5e5", mr: 1 }} />
+                        <Typography
+                            variant="h6"
+                            sx={{ color: "#e5e5e5", fontWeight: 600 }}
+                        >
+                            Settings
+                        </Typography>
+                    </Box>
+                    {/* Settings content will go here */}
+                </MUIBox>
+            </Modal>
         </Box>
     );
 }
@@ -292,13 +551,13 @@ function SideBarHeader({ handleDrawerToggle }) {
 }
 
 /* Footer section for sidebar (always at bottom) */
-function SideBarFooter() {
+function SideBarFooter({ setIsSettingsOpen }) {
     // Footer navigation items (bottom of sidebar)
     const footerNavigationItems = [
         {
             icon: <SettingsIcon />,
             text: "Settings",
-            action: () => {},
+            action: () => setIsSettingsOpen(true),
         },
     ];
     return (
@@ -331,12 +590,13 @@ function SideBarFooter() {
 function SideBarOptions({
     chatList,
     handleScroll,
-    setChatSessionKey,
+    triggerNewChat,
     mainNavigationItems,
     setChatList,
 }) {
     const [anchorEl, setAnchorEl] = useState(null);
     const [selectedChat, setSelectedChat] = useState(null);
+    const [chatsTitleAnchorEl, setChatsTitleAnchorEl] = useState(null);
 
     const handleMenuOpen = (event, chat) => {
         event.stopPropagation();
@@ -347,6 +607,15 @@ function SideBarOptions({
     const handleMenuClose = () => {
         setAnchorEl(null);
         setSelectedChat(null);
+    };
+
+    const handleChatsTitleMenuOpen = (event) => {
+        event.stopPropagation();
+        setChatsTitleAnchorEl(event.currentTarget);
+    };
+
+    const handleChatsTitleMenuClose = () => {
+        setChatsTitleAnchorEl(null);
     };
 
     const handleDeleteChat = async () => {
@@ -362,12 +631,48 @@ function SideBarOptions({
                 prevChatList.filter((chat) => chat.chatId !== chatId)
             );
 
+            // Get current chatId from URL
+            const match = window.location.pathname.match(/\/chat\/(.+)$/);
+            const currentChatId = match ? match[1] : null;
+            if (currentChatId === chatId) {
+                // If the deleted chat is the current one, update URL and trigger new chat
+                const path = window.location.pathname.replace(
+                    /\/chat(\/[^/]*)?$/,
+                    ""
+                );
+                window.history.replaceState({}, "", `${path}${"/chat"}`);
+                triggerNewChat();
+            }
+
             console.log(`Successfully deleted chat: ${chatName} (${chatId})`);
         } catch (error) {
             console.error("Error deleting chat:", error);
         }
 
         handleMenuClose();
+    };
+
+    const handleDeleteAllChats = async () => {
+        try {
+            // Delete all chats from database
+            await chatDB.deleteAllChats();
+
+            // Clear chatList state
+            setChatList([]);
+
+            console.log("Successfully deleted all chats");
+            // Update URL and trigger new chat after deleting all
+            const path = window.location.pathname.replace(
+                /\/chat(\/[^/]*)?$/,
+                ""
+            );
+            window.history.replaceState({}, "", `${path}${"/chat"}`);
+            triggerNewChat();
+        } catch (error) {
+            console.error("Error deleting all chats:", error);
+        }
+
+        handleChatsTitleMenuClose();
     };
 
     return (
@@ -405,18 +710,44 @@ function SideBarOptions({
             </List>
             {/* Chat History Title (fixed within scroll area) */}
             <List sx={{ paddingBottom: 0 }}>
-                <ListItem sx={{ paddingBottom: 0 }}>
+                <ListItem
+                    sx={{
+                        paddingBottom: 0,
+                        display: "flex",
+                        justifyContent: "space-between",
+                        alignItems: "center",
+                        "&:hover .chats-title-menu-button": {
+                            opacity: 1,
+                        },
+                    }}
+                >
                     <ListItemText
                         primary="Chats"
                         sx={{
                             "& .MuiListItemText-primary": {
-                                fontSize: "13px",
+                                fontSize: "16px",
                                 fontWeight: 500,
                                 color: "#b0b0b0",
                                 paddingBottom: 0,
                             },
                         }}
                     />
+                    <IconButton
+                        className="chats-title-menu-button"
+                        onClick={handleChatsTitleMenuOpen}
+                        sx={{
+                            opacity: 0,
+                            transition: "opacity 0.2s",
+                            color: "#b0b0b0",
+                            padding: "4px",
+                            "&:hover": {
+                                backgroundColor: "rgba(255, 255, 255, 0.08)",
+                            },
+                        }}
+                        size="small"
+                    >
+                        <MoreVert fontSize="small" />
+                    </IconButton>
                 </ListItem>
             </List>
             {/* Chat History List (scrollable with title) */}
@@ -443,7 +774,7 @@ function SideBarOptions({
                             <StyledListItemButton
                                 disableRipple
                                 onClick={() => {
-                                    // INSERT_YOUR_CODE
+                                    console.log("chat.chatId", chat.chatId);
                                     const path =
                                         window.location.pathname.replace(
                                             /\/chat(\/[^/]*)?$/,
@@ -454,7 +785,7 @@ function SideBarOptions({
                                         "",
                                         `${path}/chat/${chat.chatId}`
                                     );
-                                    setChatSessionKey(Date.now());
+                                    triggerNewChat();
                                 }}
                                 sx={{
                                     display: "flex",
@@ -521,6 +852,29 @@ function SideBarOptions({
                 }}
             >
                 <MenuItem onClick={handleDeleteChat}>Delete chat</MenuItem>
+            </Menu>
+
+            {/* Chats Title Options Menu */}
+            <Menu
+                anchorEl={chatsTitleAnchorEl}
+                open={Boolean(chatsTitleAnchorEl)}
+                onClose={handleChatsTitleMenuClose}
+                PaperProps={{
+                    sx: {
+                        backgroundColor: "#2d2d2d",
+                        color: "#e5e5e5",
+                        "& .MuiMenuItem-root": {
+                            fontSize: "13px",
+                            "&:hover": {
+                                backgroundColor: "rgba(255, 255, 255, 0.08)",
+                            },
+                        },
+                    },
+                }}
+            >
+                <MenuItem onClick={handleDeleteAllChats}>
+                    Delete all chats
+                </MenuItem>
             </Menu>
         </Box>
     );

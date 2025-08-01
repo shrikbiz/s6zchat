@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef } from "react";
-import TextEditor from "@components/TextEditor/TextEditor";
+import TextEditor from "@components/TextEditor";
 import WelcomeScreen from "@components/Welcome";
 import ChatList from "@components/ChatItems";
 import ModelSelector from "../ModelSelector";
@@ -193,7 +193,7 @@ export default function ChatPlayground() {
             const currentPath = window.location.pathname;
             const expectedPath = `/chat/${chatId}`;
             if (currentPath !== expectedPath) {
-                window.history.replaceState(null, '', expectedPath);
+                window.history.replaceState(null, "", expectedPath);
             }
         }
     }, [chatId]);

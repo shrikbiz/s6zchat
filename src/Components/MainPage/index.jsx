@@ -2,7 +2,7 @@ import Layout from "@components/Layout";
 import { useEffect, useState } from "react";
 import { useLiveQuery } from "dexie-react-hooks";
 import chatDB from "@components/ChatDB";
-import ChatPlayground from "./S6ZChat";
+import ChatPlayground from "../Playground";
 
 export default function S6ZChat() {
     const [offset, setOffset] = useState(0);

@@ -128,14 +128,7 @@ export default function Layout({
                     },
                 }}
             >
-                <Box
-                    sx={{
-                        display: "flex",
-                        flexDirection: "column",
-                        height: "100%",
-                        position: "relative",
-                    }}
-                >
+                <Box className="layout-sidebar-container">
                     <SideBarHeader handleDrawerToggle={handleDrawerToggle} />
 
                     <Divider

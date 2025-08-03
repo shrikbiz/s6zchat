@@ -1,0 +1,30 @@
+.user-chat-container {
+    margin-top: 50px;
+    margin-bottom: 50px;
+    display: flex;
+}
+
+.user-chat-message {
+    max-width: 70%;
+    padding: 10px;
+    border-radius: 10px;
+    background: #383942;
+    color: #f7f7f8;
+    text-align: right;
+    border: 1px solid #444654;
+    word-break: break-word;
+    overflow-wrap: break-word;
+    white-space: pre-wrap;
+}
+
+.user-chat-content {
+    line-height: 1.5;
+    margin: 0;
+    background: none;
+    border: none;
+    color: inherit;
+    font-family: system-ui, sans-serif;
+    white-space: pre-wrap;
+    word-break: break-word;
+    overflow-wrap: break-word;
+}

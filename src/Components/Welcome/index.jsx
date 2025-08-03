@@ -3,6 +3,7 @@ import { CircularProgress } from "@mui/material";
 import GradientText from "@components/Animations/GradientText";
 import Threads from "@components/Animations/Threads";
 import config from "@components/config";
+import "./index.css";
 
 const WelcomeScreen = () => {
     const [isLoading, setIsLoading] = useState(true);
@@ -17,16 +18,7 @@ const WelcomeScreen = () => {
 
     if (isLoading) {
         return (
-            <div
-                style={{
-                    width: "100%",
-                    height: "100%",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    position: "relative",
-                }}
-            >
+            <div className="welcome-loading-container">
                 <CircularProgress
                     size={60}
                     thickness={4}
@@ -39,41 +31,15 @@ const WelcomeScreen = () => {
     }
 
     return (
-        <div
-            style={{
-                width: "100%",
-                height: "100%",
-                position: "relative",
-            }}
-        >
-            <div
-                style={{
-                    position: "absolute",
-                    inset: 0,
-                    width: "100%",
-                    height: "100%",
-                    zIndex: 0,
-                }}
-            >
+        <div className="welcome-main-container">
+            <div className="welcome-background-container">
                 <Threads
                     amplitude={0.2}
                     distance={0.1}
                     enableMouseInteraction={true}
                 />
             </div>
-            <div
-                style={{
-                    position: "absolute",
-                    inset: 0,
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    zIndex: 1,
-                    width: "100%",
-                    height: "100%",
-                    pointerEvents: "none", // so background is interactive if needed
-                }}
-            >
+            <div className="welcome-content-container">
                 <GradientText
                     colors={[
                         "#40ffaa",

@@ -1,18 +1,10 @@
 import AgentChatItem from "./AgentChatItem";
 import UserChatItem from "./UserChat";
+import "./index.css";
 
 export default function ChatList({ chatItems }) {
     return (
-        <div
-            style={{
-                width: "100%",
-                maxWidth: 800,
-                minWidth: 0,
-                margin: "0 auto",
-                padding: "0 16px",
-                boxSizing: "border-box",
-            }}
-        >
+        <div className="chat-list-container">
             {chatItems.map((chatItem, index) => (
                 <div key={index}>
                     {chatItem.role === "user" ? (

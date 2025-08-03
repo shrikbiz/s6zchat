@@ -7,6 +7,7 @@ import chatDB from "@components/ChatDB";
 import { getOptsForTitle, MODELS } from "@components/API/config";
 import { getTitleForChat } from "@components/API/ollama";
 import { fetchAndDecodeResponse } from "@components/API";
+import "./index.css";
 
 export default function ChatPlayground() {
     const [chatId, setChatId] = useState(null);
@@ -211,58 +212,29 @@ export default function ChatPlayground() {
     }, [isProcessingQuery]);
 
     return (
-        <div
-            style={{
-                display: "flex",
-                flexDirection: "column",
-                height: "100vh",
-                width: "100%",
-                background: "#1a1a1a", // Updated to match layout background
-                color: "#e5e5e5", // light text for contrast
-            }}
-        >
+        <div className="playground-container">
             <ModelSelector
                 selectedModel={selectedModel}
                 onModelChange={setSelectedModel}
             />
-            <div
-                style={{
-                    position: "relative",
-                    flex: 1,
-                    width: "100%",
-                    overflow: "hidden",
-                }}
-            >
+            <div className="playground-content-wrapper">
                 <div
                     ref={chatListRef}
+                    className="playground-chat-list"
                     style={{
-                        position: "absolute",
-                        inset: 0,
-                        transition:
-                            "opacity 0.4s cubic-bezier(.4,0,.2,1), visibility 0.4s",
                         opacity: chatItems.length ? 1 : 0,
                         visibility: chatItems.length ? "visible" : "hidden",
                         pointerEvents: chatItems.length ? "auto" : "none",
-                        overflowY: "auto",
-                        padding: "24px 0",
-                        boxSizing: "border-box",
-                        width: "100%",
-                        height: "100%",
                     }}
                 >
                     <ChatList chatItems={chatItems} />
                 </div>
                 <div
+                    className="playground-welcome-screen"
                     style={{
-                        position: "absolute",
-                        inset: 0,
-                        transition:
-                            "opacity 0.4s cubic-bezier(.4,0,.2,1), visibility 0.4s",
                         opacity: chatItems.length ? 0 : 1,
                         visibility: chatItems.length ? "hidden" : "visible",
                         pointerEvents: chatItems.length ? "none" : "auto",
-                        width: "100%",
-                        height: "100%",
                     }}
                 >
                     <WelcomeScreen />

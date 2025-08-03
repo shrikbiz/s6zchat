@@ -1,0 +1,65 @@
+.model-selector-container {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    z-index: 1000;
+    min-width: 200px;
+}
+
+.model-selector-select {
+    background-color: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 16px;
+}
+
+.model-selector-select .MuiSelect-select {
+    color: #e5e5e5;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.model-selector-select .MuiOutlinedInput-notchedOutline {
+    border: none;
+}
+
+.model-selector-menu {
+    background-color: #2d2d2d;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 16px;
+    margin-top: 8px;
+}
+
+.model-selector-menu-item {
+    color: #e5e5e5;
+}
+
+.model-selector-menu-item-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.model-selector-menu-item-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 4px;
+}
+
+.model-selector-menu-item-title {
+    font-weight: 500;
+}
+
+.model-selector-chip {
+    height: 20px;
+    font-size: 0.7rem;
+    font-weight: 500;
+}
+
+.model-selector-description {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.75rem;
+    line-height: 1.2;
+}

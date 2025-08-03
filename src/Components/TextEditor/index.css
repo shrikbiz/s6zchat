@@ -1,0 +1,41 @@
+.text-editor-container {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    max-width: 700px;
+    margin: 0 auto;
+    gap: 12px;
+    padding-bottom: 5px;
+}
+
+.text-editor-textarea {
+    flex: 1;
+    min-height: 44px;
+    max-height: 200px;
+    resize: vertical;
+    padding: 16px;
+    font-size: 1rem;
+    border-radius: 15px;
+    border: 1px solid #343541;
+    box-sizing: border-box;
+    outline: none;
+    background: #343541;
+    color: #f7f7f8;
+}
+
+.text-editor-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 48px;
+    min-height: 44px;
+    border-radius: 6px;
+    border: none;
+    background: #3a3a4a;
+    color: #e0e0e3;
+    cursor: pointer;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.18);
+    border-top: 1px solid #343541;
+    border-left: 1px solid #343541;
+    padding: 0;
+}

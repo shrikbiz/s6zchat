@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import {
     FormControl,
     Select,
@@ -6,20 +6,21 @@ import {
     Typography,
     Box,
     Chip,
-} from '@mui/material';
-import { MODELS } from '@components/API/config';
+} from "@mui/material";
+import { MODELS } from "@components/API/config";
+import "./index.css";
 
 const modelInfo = {
     [MODELS.openAI]: {
         description: "GPT-4.1 - Cloud-based, powerful AI model",
         chipColor: "primary",
-        chipText: "Cloud"
+        chipText: "Cloud",
     },
     [MODELS.ollama]: {
         description: "Gemma3 - Local, privacy-focused AI model",
         chipColor: "secondary",
-        chipText: "Local"
-    }
+        chipText: "Local",
+    },
 };
 
 const ModelSelector = ({ selectedModel, onModelChange }) => {
@@ -38,15 +39,7 @@ const ModelSelector = ({ selectedModel, onModelChange }) => {
     };
 
     return (
-        <Box
-            sx={{
-                position: 'absolute',
-                top: 16,
-                right: 16,
-                zIndex: 1000,
-                minWidth: 200,
-            }}
-        >
+        <Box className="model-selector-container">
             <FormControl fullWidth size="small">
                 <Select
                     value={selectedModel}
@@ -54,78 +47,58 @@ const ModelSelector = ({ selectedModel, onModelChange }) => {
                     onClose={handleClose}
                     onOpen={handleOpen}
                     open={open}
+                    className="model-selector-select"
                     sx={{
-                        backgroundColor: 'rgba(255, 255, 255, 0.1)',
-                        backdropFilter: 'blur(10px)',
-                        border: '1px solid rgba(255, 255, 255, 0.2)',
-                        borderRadius: 2,
-                        '& .MuiSelect-select': {
-                            color: '#e5e5e5',
-                            display: 'flex',
-                            alignItems: 'center',
-                            gap: 1,
+                        "&:hover .MuiOutlinedInput-notchedOutline": {
+                            border: "none",
                         },
-                        '& .MuiOutlinedInput-notchedOutline': {
-                            border: 'none',
-                        },
-                        '&:hover .MuiOutlinedInput-notchedOutline': {
-                            border: 'none',
-                        },
-                        '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                            border: 'none',
+                        "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                            border: "none",
                         },
                     }}
                     MenuProps={{
                         PaperProps: {
-                            sx: {
-                                backgroundColor: '#2d2d2d',
-                                border: '1px solid rgba(255, 255, 255, 0.2)',
-                                borderRadius: 2,
-                                mt: 1,
-                            }
-                        }
+                            className: "model-selector-menu",
+                        },
                     }}
                 >
                     {Object.values(MODELS).map((model) => (
                         <MenuItem
                             key={model}
                             value={model}
+                            className="model-selector-menu-item"
                             sx={{
-                                color: '#e5e5e5',
-                                '&:hover': {
-                                    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                                "&:hover": {
+                                    backgroundColor: "rgba(255, 255, 255, 0.1)",
                                 },
-                                '&.Mui-selected': {
-                                    backgroundColor: 'rgba(255, 255, 255, 0.15)',
-                                    '&:hover': {
-                                        backgroundColor: 'rgba(255, 255, 255, 0.2)',
+                                "&.Mui-selected": {
+                                    backgroundColor:
+                                        "rgba(255, 255, 255, 0.15)",
+                                    "&:hover": {
+                                        backgroundColor:
+                                            "rgba(255, 255, 255, 0.2)",
                                     },
                                 },
                             }}
                         >
-                            <Box sx={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
-                                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 0.5 }}>
-                                    <Typography variant="body2" sx={{ fontWeight: 500 }}>
+                            <Box className="model-selector-menu-item-container">
+                                <Box className="model-selector-menu-item-header">
+                                    <Typography
+                                        variant="body2"
+                                        className="model-selector-menu-item-title"
+                                    >
                                         {model}
                                     </Typography>
                                     <Chip
                                         label={modelInfo[model].chipText}
                                         size="small"
                                         color={modelInfo[model].chipColor}
-                                        sx={{
-                                            height: 20,
-                                            fontSize: '0.7rem',
-                                            fontWeight: 500,
-                                        }}
+                                        className="model-selector-chip"
                                     />
                                 </Box>
                                 <Typography
                                     variant="caption"
-                                    sx={{
-                                        color: 'rgba(255, 255, 255, 0.7)',
-                                        fontSize: '0.75rem',
-                                        lineHeight: 1.2,
-                                    }}
+                                    className="model-selector-description"
                                 >
                                     {modelInfo[model].description}
                                 </Typography>
@@ -138,4 +111,4 @@ const ModelSelector = ({ selectedModel, onModelChange }) => {
     );
 };
 
-export default ModelSelector; 
+export default ModelSelector;

@@ -1,5 +1,6 @@
 import GradientText from "@components/Animations/GradientText";
 import MarkdownRenderer from "@components/MarkdownRenderer";
+import "./AgentChatItem.css";
 
 export default function AgentChatItem({ chatItem }) {
     return chatItem.isLoading ? (
@@ -9,15 +10,7 @@ export default function AgentChatItem({ chatItem }) {
             showBorder={false}
             className="custom-class"
         >
-            <h3
-                style={{
-                    fontWeight: "normal",
-                    fontFamily: "sans-serif",
-                    fontSize: "1rem",
-                }}
-            >
-                Thinking
-            </h3>
+            <h3 className="agent-chat-thinking-text">Thinking</h3>
         </GradientText>
     ) : (
         <MarkdownRenderer markdown={chatItem.content} />

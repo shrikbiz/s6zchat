@@ -13,7 +13,7 @@ export default function MiniNavigation({
     return (
         <StyledMiniDrawer
             onClick={handleDrawerToggle}
-            sx={{ cursor: "pointer" }}
+            className="mini-navigation-drawer"
         >
             <Tooltip title="Open Navigation" placement="right">
                 <StyledIconButton
@@ -26,50 +26,25 @@ export default function MiniNavigation({
                     onFocus={() => setIsMiniNavButtonFocused(true)}
                     onBlur={() => setIsMiniNavButtonFocused(false)}
                 >
-                    <Box
-                        sx={{
-                            width: 24,
-                            height: 24,
-                            display: "flex",
-                            alignItems: "center",
-                            justifyContent: "center",
-                            position: "relative",
-                        }}
-                    >
+                    <Box className="mini-navigation-icon-container">
                         <Box
+                            className="mini-navigation-icon-box"
                             sx={{
-                                position: "absolute",
-                                top: 0,
-                                left: 0,
-                                width: 24,
-                                height: 24,
-                                display: "flex",
-                                alignItems: "center",
-                                justifyContent: "center",
                                 opacity: isMiniNavButtonFocused ? 0 : 1,
                                 transform: isMiniNavButtonFocused
                                     ? "scale(0.95)"
                                     : "scale(1)",
-                                transition: "opacity 0.4s, transform 0.4s",
                             }}
                         >
                             <CompanyIcon style={{ width: 24, height: 24 }} />
                         </Box>
                         <Box
+                            className="mini-navigation-icon-box"
                             sx={{
-                                position: "absolute",
-                                top: 0,
-                                left: 0,
-                                width: 24,
-                                height: 24,
-                                display: "flex",
-                                alignItems: "center",
-                                justifyContent: "center",
                                 opacity: isMiniNavButtonFocused ? 1 : 0,
                                 transform: isMiniNavButtonFocused
                                     ? "scale(1)"
                                     : "scale(0.95)",
-                                transition: "opacity 0.4s, transform 0.4s",
                             }}
                         >
                             <ViewSidebarRounded sx={{ fontSize: 24 }} />
@@ -77,13 +52,7 @@ export default function MiniNavigation({
                     </Box>
                 </StyledIconButton>
             </Tooltip>
-            <Divider
-                sx={{
-                    width: "80%",
-                    backgroundColor: "#4a4b53",
-                    margin: "8px 0",
-                }}
-            />
+            <Divider className="mini-navigation-divider" />
             {mainNavigationItems.map((item, index) => (
                 <Tooltip key={index} title={item.text} placement="right">
                     <StyledIconButton

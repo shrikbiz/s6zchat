@@ -6,22 +6,8 @@ import { ViewSidebarRounded } from "@mui/icons-material";
 /* Header: Company icon and close button */
 export default function SideBarHeader({ handleDrawerToggle }) {
     return (
-        <Box
-            sx={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-                padding: 1,
-            }}
-        >
-            <Box
-                sx={{
-                    display: "flex",
-                    alignItems: "end",
-                    height: "100%",
-                    paddingBottom: "5px",
-                }}
-            >
+        <Box className="sidebar-header">
+            <Box className="sidebar-header-icon-container">
                 <CompanyIcon />
             </Box>
             <Box>

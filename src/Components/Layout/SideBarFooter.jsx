@@ -13,20 +13,7 @@ export default function SideBarFooter({ setIsSettingsOpen }) {
         },
     ];
     return (
-        <Box
-            id="sideNavFooter"
-            sx={{
-                position: "absolute",
-                bottom: 0,
-                left: 0,
-                width: "100%",
-                padding: 1,
-                display: "flex",
-                justifyContent: "flex-start",
-                gap: 1,
-                background: "#202123",
-            }}
-        >
+        <Box id="sideNavFooter" className="sidebar-footer">
             {footerNavigationItems.map((item, index) => (
                 <Tooltip key={index} title={item.text} placement="top">
                     <StyledIconButton onClick={item.action}>

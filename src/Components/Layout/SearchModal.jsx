@@ -20,37 +20,10 @@ export default function ChatSearchModal({
 }) {
     return (
         <Modal open={isSearchOpen} onClose={() => setIsSearchOpen(false)}>
-            <Box
-                sx={{
-                    position: "absolute",
-                    top: "50%",
-                    left: "50%",
-                    transform: "translate(-50%, -50%)",
-                    width: {
-                        xs: "90vw",
-                        sm: "70vw",
-                        md: "60vw",
-                        lg: "50vw",
-                    },
-                    maxWidth: 600,
-                    minWidth: 300,
-                    height: { xs: "70vh", sm: "60vh", md: "60vh" },
-                    bgcolor: "#23242a", // dark background
-                    color: "#e5e5e5", // light text
-                    boxShadow: 24,
-                    p: 2,
-                    borderRadius: 2,
-                    outline: "none",
-                    display: "flex",
-                    flexDirection: "column",
-                }}
-            >
-                <Box sx={{ mb: 2, display: "flex", alignItems: "center" }}>
+            <Box className="search-modal-container">
+                <Box className="search-modal-header">
                     <Search sx={{ color: "#e5e5e5", mr: 1 }} />
-                    <Typography
-                        variant="h6"
-                        sx={{ color: "#e5e5e5", fontWeight: 600 }}
-                    >
+                    <Typography variant="h6" className="search-modal-title">
                         Search chats
                     </Typography>
                 </Box>
@@ -60,12 +33,9 @@ export default function ChatSearchModal({
                     placeholder="Search chats..."
                     value={searchQuery}
                     onChange={(e) => handleSearch(e.target.value)}
+                    className="search-modal-textfield"
                     sx={{
-                        mb: 2,
-                        input: { color: "#e5e5e5", background: "#23242a" },
-                        label: { color: "#b0b0b0" },
                         "& .MuiOutlinedInput-root": {
-                            "& fieldset": { borderColor: "#444654" },
                             "&:hover fieldset": { borderColor: "#40ffaa" },
                             "&.Mui-focused fieldset": {
                                 borderColor: "#40ffaa",
@@ -74,15 +44,7 @@ export default function ChatSearchModal({
                     }}
                     InputLabelProps={{ style: { color: "#b0b0b0" } }}
                 />
-                <List
-                    sx={{
-                        flex: 1,
-                        overflowY: "auto",
-                        background: "transparent",
-                        p: 0,
-                        mb: 0,
-                    }}
-                >
+                <List className="search-modal-list">
                     {searchQuery ? (
                         searchResults.length === 0 ? (
                             <ListItem>
@@ -96,8 +58,8 @@ export default function ChatSearchModal({
                                     onClick={() =>
                                         handleSelectChat(chat.chatId)
                                     }
+                                    className="search-modal-list-item"
                                     sx={{
-                                        background: "#23242a",
                                         "&:hover": {
                                             background: "#2a2b32",
                                         },
@@ -117,23 +79,10 @@ export default function ChatSearchModal({
                                                 : ""
                                         }
                                         primaryTypographyProps={{
-                                            color: "#e5e5e5",
-                                            fontSize: 15,
-                                            fontWeight: 500,
-                                            sx: {
-                                                overflow: "hidden",
-                                                textOverflow: "ellipsis",
-                                                whiteSpace: "nowrap",
-                                            },
+                                            className: "search-modal-list-item-text-primary",
                                         }}
                                         secondaryTypographyProps={{
-                                            color: "#b0b0b0",
-                                            fontSize: 13,
-                                            sx: {
-                                                overflow: "hidden",
-                                                textOverflow: "ellipsis",
-                                                whiteSpace: "nowrap",
-                                            },
+                                            className: "search-modal-list-item-text-secondary",
                                         }}
                                     />
                                 </ListItem>
@@ -145,8 +94,8 @@ export default function ChatSearchModal({
                                 button
                                 key={chat.chatId}
                                 onClick={() => handleSelectChat(chat.chatId)}
+                                className="search-modal-list-item"
                                 sx={{
-                                    background: "#23242a",
                                     "&:hover": { background: "#2a2b32" },
                                 }}
                             >
@@ -161,23 +110,10 @@ export default function ChatSearchModal({
                                             : ""
                                     }
                                     primaryTypographyProps={{
-                                        color: "#e5e5e5",
-                                        fontSize: 15,
-                                        fontWeight: 500,
-                                        sx: {
-                                            overflow: "hidden",
-                                            textOverflow: "ellipsis",
-                                            whiteSpace: "nowrap",
-                                        },
+                                        className: "search-modal-list-item-text-primary",
                                     }}
                                     secondaryTypographyProps={{
-                                        color: "#b0b0b0",
-                                        fontSize: 13,
-                                        sx: {
-                                            overflow: "hidden",
-                                            textOverflow: "ellipsis",
-                                            whiteSpace: "nowrap",
-                                        },
+                                        className: "search-modal-list-item-text-secondary",
                                     }}
                                 />
                             </ListItem>

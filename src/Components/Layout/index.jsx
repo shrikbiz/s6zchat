@@ -9,6 +9,7 @@ import MiniNavigation from "./MiniNavigation";
 import SideBarHeader from "./SideBarHeader";
 import ChatSearchModal from "./SearchModal";
 import SearchModal from "./SearchModel";
+import "./index.css";
 
 /**
  * Layout component for the main application structure.
@@ -103,7 +104,7 @@ export default function Layout({
 
     // Main layout rendering
     return (
-        <Box sx={{ display: "flex", height: "100vh" }}>
+        <Box className="layout-container">
             {/* Mini Navigation (always visible) */}
             <MiniNavigation
                 mainNavigationItems={mainNavigationItems}
@@ -131,12 +132,7 @@ export default function Layout({
                 <Box className="layout-sidebar-container">
                     <SideBarHeader handleDrawerToggle={handleDrawerToggle} />
 
-                    <Divider
-                        sx={{
-                            backgroundColor: "#4a4b53",
-                            margin: "0 8px 8px 8px",
-                        }}
-                    />
+                    <Divider className="layout-divider" />
 
                     <SideBarOptions
                         chatList={chatList}
@@ -146,17 +142,7 @@ export default function Layout({
                         setChatList={setChatList}
                     />
 
-                    <Divider
-                        sx={{
-                            backgroundColor: "#4a4b53",
-                            margin: "0 8px 8px 8px",
-                            position: "absolute",
-                            left: 0,
-                            right: 0,
-                            bottom: 56, // height of the footer Box (adjust if needed)
-                            zIndex: 1,
-                        }}
-                    />
+                    <Divider className="layout-footer-divider" />
 
                     <SideBarFooter setIsSettingsOpen={setIsSettingsOpen} />
                 </Box>

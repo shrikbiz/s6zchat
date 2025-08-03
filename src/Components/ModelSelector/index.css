@@ -3,11 +3,11 @@
     top: 16px;
     right: 16px;
     z-index: 1000;
-    min-width: 200px;
+    min-width: 120px;
 }
 
 .model-selector-select {
-    background-color: rgba(255, 255, 255, 0.1);
+    background-color: rgba(255, 255, 255, 0.02);
     backdrop-filter: blur(10px);
     border: 1px solid rgba(255, 255, 255, 0.2);
     border-radius: 16px;

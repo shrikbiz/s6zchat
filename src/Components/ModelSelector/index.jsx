@@ -47,20 +47,46 @@ const ModelSelector = ({ selectedModel, onModelChange }) => {
                     onClose={handleClose}
                     onOpen={handleOpen}
                     open={open}
-                    className="model-selector-select"
                     sx={{
+                        backgroundColor: "rgba(255, 255, 255, 0.03)",
+                        backdropFilter: "blur(10px)",
+                        border: "1px solid rgba(255, 255, 255, 0.2)",
+                        borderRadius: 2,
+                        minWidth: "120px",
+                        "& .MuiSelect-select": {
+                            color: "#e5e5e5",
+                            display: "flex",
+                            alignItems: "center",
+                            gap: 1,
+                        },
+                        "& .MuiOutlinedInput-notchedOutline": {
+                            border: "none",
+                        },
                         "&:hover .MuiOutlinedInput-notchedOutline": {
                             border: "none",
                         },
                         "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
                             border: "none",
                         },
+                        "& .MuiSelect-icon": {
+                            color: "#e5e5e5",
+                        },
                     }}
                     MenuProps={{
                         PaperProps: {
-                            className: "model-selector-menu",
+                            sx: {
+                                backgroundColor: "#2d2d2d",
+                                border: "1px solid rgba(255, 255, 255, 0.2)",
+                                borderRadius: 2,
+                                mt: 1,
+                            },
                         },
                     }}
+                    renderValue={(value) => (
+                        <Typography variant="body2" sx={{ fontWeight: 500 }}>
+                            {value}
+                        </Typography>
+                    )}
                 >
                     {Object.values(MODELS).map((model) => (
                         <MenuItem

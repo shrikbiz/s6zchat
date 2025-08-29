@@ -13,10 +13,12 @@ export default function SideBarFooter({ setIsSettingsOpen }) {
         },
     ];
     return (
-        <Box id="sideNavFooter" className="sidebar-footer">
+        <Box id="sideNavFooter" className="sidebar-footer" data-testid="sidebar-footer">
             {footerNavigationItems.map((item, index) => (
                 <Tooltip key={index} title={item.text} placement="top">
-                    <StyledIconButton onClick={item.action}>
+                    <StyledIconButton 
+                        data-testid={item.text.toLowerCase()}
+                        onClick={item.action}>
                         {item.icon}
                     </StyledIconButton>
                 </Tooltip>

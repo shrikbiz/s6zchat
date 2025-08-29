@@ -28,14 +28,12 @@ jest.mock('dexie', () => {
     chats: mockTable,
   }));
 
-  return mockDexie;
+  return {
+    __esModule: true,
+    default: mockDexie,
+    liveQuery: jest.fn(),
+  };
 });
-
-jest.mock('dexie', () => ({
-  __esModule: true,
-  default: jest.fn(),
-  liveQuery: jest.fn(),
-}));
 
 // Setup mock implementations
 const mockChatsTable = {

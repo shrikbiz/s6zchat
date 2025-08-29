@@ -5,7 +5,7 @@ import '@testing-library/jest-dom';
 import App from '../App';
 
 // Mock the S6ZChat component
-jest.mock('@components/MainPage', () => {
+jest.mock('../Components/MainPage', () => {
   return function MockS6ZChat() {
     return <div data-testid="s6z-chat">S6ZChat Component</div>;
   };

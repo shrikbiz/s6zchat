@@ -115,6 +115,7 @@ export default function Layout({
 
             {/* Full Side Navigation (Drawer) */}
             <StyledDrawer
+                data-testid="sidebar-drawer"
                 variant="persistent"
                 open={isDrawerOpen}
                 onClose={handleDrawerToggle}
@@ -129,7 +130,7 @@ export default function Layout({
                     },
                 }}
             >
-                <Box className="layout-sidebar-container">
+                <Box className="layout-sidebar-container" data-testid="sidebar-container">
                     <SideBarHeader handleDrawerToggle={handleDrawerToggle} />
 
                     <Divider className="layout-divider" />

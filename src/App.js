@@ -1,4 +1,4 @@
-import S6ZChat from "@components/MainPage";
+import S6ZChat from "./Components/MainPage";
 import { Route, Routes, Navigate } from "react-router-dom";
 
 export default function App() {

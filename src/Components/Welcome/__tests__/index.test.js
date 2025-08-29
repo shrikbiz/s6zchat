@@ -18,7 +18,7 @@ jest.mock('@mui/material', () => ({
   )
 }));
 
-jest.mock('@components/Animations/GradientText', () => {
+jest.mock('../../Animations/GradientText', () => {
   return function GradientText({ colors, animationSpeed, showBorder, className, children }) {
     return (
       <div 
@@ -34,7 +34,7 @@ jest.mock('@components/Animations/GradientText', () => {
   };
 });
 
-jest.mock('@components/Animations/Threads', () => {
+jest.mock('../../Animations/Threads', () => {
   return function Threads({ amplitude, distance, enableMouseInteraction }) {
     return (
       <div 
@@ -49,7 +49,7 @@ jest.mock('@components/Animations/Threads', () => {
   };
 });
 
-jest.mock('@components/config', () => ({
+jest.mock('../../config', () => ({
   app: {
     name: 'S6ZChat'
   }
@@ -266,7 +266,7 @@ describe('WelcomeScreen Component', () => {
   describe('Edge Cases and Error Scenarios', () => {
     test('handles missing config gracefully', async () => {
       // Mock config with missing app name
-      jest.doMock('@components/config', () => ({
+      jest.doMock('../../config', () => ({
         app: {
           name: undefined
         }

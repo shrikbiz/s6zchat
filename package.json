@@ -32,11 +32,12 @@
   },
   "scripts": {
     "start": "react-app-rewired start",
-    "build": "react-app-rewired build",
+    "build": "node scripts/test-and-build.js",
+    "build-react": "react-app-rewired build",
     "test": "react-app-rewired test",
+    "test:e2e": "node scripts/run-e2e-tests.js",
     "eject": "react-scripts eject",
-    "setup-env": "node setup-env.js",
-    "test-and-build": "node scripts/test-and-build.js"
+    "setup-env": "node setup-env.js"
   },
   "eslintConfig": {
     "extends": [

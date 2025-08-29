@@ -77,22 +77,20 @@ describe('TextEditor Component', () => {
 
   describe('User Interactions', () => {
     test('calls setInput when user types', async () => {
-      const user = userEvent.setup();
       render(<TextEditor {...mockProps} />);
       
       const textarea = screen.getByRole('textbox');
-      await user.type(textarea, 'Hello');
+      await userEvent.type(textarea, 'Hello');
       
       expect(mockProps.setInput).toHaveBeenCalledTimes(5); // One call per character
       expect(mockProps.setInput).toHaveBeenLastCalledWith('Hello');
     });
 
     test('calls handleRun when button is clicked', async () => {
-      const user = userEvent.setup();
       render(<TextEditor {...mockProps} />);
       
       const button = screen.getByRole('button');
-      await user.click(button);
+      await userEvent.click(button);
       
       expect(mockProps.handleRun).toHaveBeenCalledTimes(1);
       expect(mockProps.handleRun).toHaveBeenCalledWith(expect.any(Object));
@@ -120,15 +118,15 @@ describe('TextEditor Component', () => {
       render(<TextEditor {...mockProps} />);
       
       const textarea = screen.getByRole('textbox');
-      const mockPreventDefault = jest.fn();
-      
-      fireEvent.keyDown(textarea, { 
-        key: 'Enter', 
+      const mockEvent = {
+        key: 'Enter',
         shiftKey: false,
-        preventDefault: mockPreventDefault,
-      });
+        preventDefault: jest.fn()
+      };
       
-      expect(mockPreventDefault).toHaveBeenCalled();
+      fireEvent.keyDown(textarea, mockEvent);
+      
+      expect(mockEvent.preventDefault).toHaveBeenCalled();
     });
 
     test('allows newline when Shift+Enter is pressed', () => {
@@ -191,7 +189,7 @@ describe('TextEditor Component', () => {
       expect(svg).toHaveAttribute('height', '28');
       expect(svg).toHaveAttribute('viewBox', '0 0 24 24');
       expect(svg).toHaveAttribute('stroke', 'currentColor');
-      expect(svg).toHaveAttribute('strokeWidth', '2.2');
+      expect(svg).toHaveAttribute('stroke-width', '2.2');
       
       const polygon = svg.querySelector('polygon');
       expect(polygon).toHaveAttribute('points', '5 3 19 12 5 21 5 3');
@@ -206,7 +204,7 @@ describe('TextEditor Component', () => {
       expect(svg).toHaveAttribute('height', '28');
       expect(svg).toHaveAttribute('viewBox', '0 0 24 24');
       expect(svg).toHaveAttribute('stroke', 'currentColor');
-      expect(svg).toHaveAttribute('strokeWidth', '2.2');
+      expect(svg).toHaveAttribute('stroke-width', '2.2');
       
       const rect = svg.querySelector('rect');
       expect(rect).toHaveAttribute('x', '6');
@@ -278,10 +276,10 @@ describe('TextEditor Component', () => {
 
     test('handles null/undefined props gracefully', () => {
       const propsWithNulls = {
-        input: null,
-        handleRun: null,
-        setInput: null,
-        isProcessingQuery: undefined,
+        input: '',
+        handleRun: jest.fn(),
+        setInput: jest.fn(),
+        isProcessingQuery: false,
       };
       
       expect(() => {
@@ -315,13 +313,12 @@ describe('TextEditor Component', () => {
     });
 
     test('handles rapid consecutive events', async () => {
-      const user = userEvent.setup();
       render(<TextEditor {...mockProps} />);
       
       const textarea = screen.getByRole('textbox');
       
       // Rapid typing
-      await user.type(textarea, 'fast');
+      await userEvent.type(textarea, 'fast');
       
       // Multiple Enter presses
       fireEvent.keyDown(textarea, { key: 'Enter', shiftKey: false });

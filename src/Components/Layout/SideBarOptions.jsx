@@ -105,6 +105,7 @@ export default function SideBarOptions({
     return (
         <Box
             id="sideNavScrollArea"
+            data-testid="sidebar-options"
             sx={{
                 height: "calc(100% - 140px)",
                 overflowY: "auto",
@@ -113,10 +114,13 @@ export default function SideBarOptions({
             onScroll={handleScroll}
         >
             {/* Main navigation (e.g., New Chat) */}
-            <List sx={{ padding: 1 }}>
+            <List sx={{ padding: 1 }} data-testid="sidebar-main-navigation">
                 {mainNavigationItems.map(({ icon, text, action }, idx) => (
                     <ListItem disablePadding key={idx}>
-                        <StyledListItemButton disableRipple onClick={action}>
+                        <StyledListItemButton 
+                            data-testid={`sidebar-${text.toLowerCase().replace(' ', '-')}`}
+                            disableRipple 
+                            onClick={action}>
                             <ListItemIcon
                                 sx={{ color: "#e5e5e5", minWidth: 30 }}
                             >
@@ -136,7 +140,7 @@ export default function SideBarOptions({
                 ))}
             </List>
             {/* Chat History Title (fixed within scroll area) */}
-            <List sx={{ paddingBottom: 0 }}>
+            <List sx={{ paddingBottom: 0 }} data-testid="chats-section">
                 <ListItem
                     sx={{
                         paddingBottom: 0,
@@ -150,6 +154,7 @@ export default function SideBarOptions({
                 >
                     <ListItemText
                         primary="Chats"
+                        data-testid="chats-title"
                         sx={{
                             "& .MuiListItemText-primary": {
                                 fontSize: "16px",
@@ -180,15 +185,17 @@ export default function SideBarOptions({
             {/* Chat History List (scrollable with title) */}
             <Box
                 id="chatHistoryContainer"
+                data-testid="chat-history-container"
                 sx={{
                     padding: 0,
                     margin: 0,
                 }}
             >
-                <List sx={{ padding: 0, margin: 0 }}>
+                <List sx={{ padding: 0, margin: 0 }} data-testid="chat-history-list">
                     {chatList.map((chat) => (
                         <ListItem
                             id="chatHistoryItems"
+                            data-testid="chat-item"
                             key={chat.chatId}
                             disablePadding
                             sx={{

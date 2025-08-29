@@ -3,7 +3,7 @@ import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom';
 import ModelSelector from '../index';
-import { MODELS } from '@components/API/config';
+import { MODELS } from '../API/config';
 
 // Mock the MUI components
 jest.mock('@mui/material', () => ({
@@ -34,7 +34,7 @@ jest.mock('@mui/material', () => ({
 }));
 
 // Mock the API config
-jest.mock('@components/API/config', () => ({
+jest.mock('../API/config', () => ({
   MODELS: {
     openAI: 'Open AI',
     ollama: 'Ollama',
@@ -308,7 +308,7 @@ describe('ModelSelector Component', () => {
   describe('Edge Cases', () => {
     test('handles empty MODELS object', () => {
       // Mock empty MODELS
-      jest.doMock('@components/API/config', () => ({
+      jest.doMock('../API/config', () => ({
         MODELS: {},
       }));
       

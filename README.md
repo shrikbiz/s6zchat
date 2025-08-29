@@ -186,10 +186,16 @@ REACT_APP_APP_VERSION=0.1.0
 Runs the app in development mode at [http://localhost:3000](http://localhost:3000)
 
 ### `npm run build`
-Builds the app for production in the `build` folder
+Runs unit tests with coverage and builds the app for production (full pipeline)
+
+### `npm run build-react`
+Builds the app for production in the `build` folder (React build only, no tests)
 
 ### `npm test`
 Launches the test runner in interactive watch mode
+
+### `npm run test:e2e`
+Runs end-to-end tests using Playwright (requires dev server running on localhost:3000)
 
 ### `npm run setup-env`
 Creates a `.env` file with default configuration

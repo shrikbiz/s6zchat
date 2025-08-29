@@ -14,9 +14,11 @@ export default function MiniNavigation({
         <StyledMiniDrawer
             onClick={handleDrawerToggle}
             className="mini-navigation-drawer"
+            data-testid="mini-navigation"
         >
             <Tooltip title="Open Navigation" placement="right">
                 <StyledIconButton
+                    data-testid="menu-toggle-button"
                     onClick={(e) => {
                         e.stopPropagation();
                         handleDrawerToggle();
@@ -56,6 +58,7 @@ export default function MiniNavigation({
             {mainNavigationItems.map((item, index) => (
                 <Tooltip key={index} title={item.text} placement="right">
                     <StyledIconButton
+                        data-testid={`mini-nav-${item.text.toLowerCase().replace(' ', '-')}`}
                         onClick={(e) => {
                             e.stopPropagation();
                             item.action();

@@ -10,8 +10,10 @@ S6ZChat is a React-based chat application supporting multiple AI providers (Open
 
 ### Core Commands
 - `npm start` - Start development server (localhost:3000)
-- `npm run build` - Build for production
-- `npm test` - Run tests in watch mode
+- `npm run build` - Run unit tests with coverage and build for production (full pipeline)
+- `npm run build-react` - Build for production (React build only, no tests)
+- `npm test` - Run unit tests in watch mode
+- `npm run test:e2e` - Run E2E tests (requires dev server running)
 - `npm run setup-env` - Create .env file with default configuration
 
 ### End-to-End Testing
@@ -141,6 +143,9 @@ npm test -- --watch
 # Ensure dev server is running
 npm start
 
+# Run all E2E tests (recommended)
+npm run test:e2e
+
 # Run individual E2E tests
 node e2e-tests/playwright-test.js
 node e2e-tests/side-menu-test.js
@@ -148,7 +153,7 @@ node e2e-tests/chat-history-test.js
 node e2e-tests/model-switching-test.js
 node e2e-tests/settings-test.js
 
-# Run all E2E tests sequentially
+# Run all E2E tests sequentially (alternative)
 node e2e-tests/run-all-tests.js
 ```
 

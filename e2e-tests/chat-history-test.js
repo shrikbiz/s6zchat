@@ -31,7 +31,7 @@ async function testChatHistory() {
     
     // Open the sidebar to check chat history
     console.log('Opening sidebar to check chat history...');
-    const menuButton = await page.locator('[data-testid="menu"], .mini-nav-button, button[aria-label*="menu"]').first();
+    const menuButton = await page.locator('[data-testid="menu-toggle-button"]');
     await menuButton.click();
     
     // Wait for sidebar to open
@@ -41,13 +41,13 @@ async function testChatHistory() {
     console.log('Checking if chat appears in history...');
     
     // Check if there's a Chats section or chat list
-    const chatItems = await page.locator('[data-testid="chat-item"], .chat-list-item, .sidebar-chat-item').count();
+    const chatItems = await page.locator('[data-testid="chat-item"]').count();
     
     if (chatItems > 0) {
       console.log(`✓ Found ${chatItems} chat item(s) in history`);
       
       // Try to find our specific chat by looking for a recent timestamp or similar text
-      const recentChats = await page.locator('[data-testid="chat-item"], .chat-list-item, .sidebar-chat-item').first();
+      const recentChats = await page.locator('[data-testid="chat-item"]').first();
       const chatText = await recentChats.textContent();
       console.log(`Most recent chat: ${chatText}`);
       
@@ -57,11 +57,10 @@ async function testChatHistory() {
       console.log('✓ Successfully clicked on chat history item');
       
     } else {
-      // If no specific chat items found, look for any text that might indicate chat presence
-      const sidebarContent = await page.locator('.MuiDrawer-paper, .sidebar-container, [role="presentation"]').first();
-      const sidebarText = await sidebarContent.textContent();
+      // If no specific chat items found, look for chats section
+      const chatsSection = await page.locator('[data-testid="chats-section"]');
       
-      if (sidebarText.includes('Chat') || sidebarText.includes('conversation')) {
+      if (await chatsSection.isVisible()) {
         console.log('✓ Chat history section exists in sidebar');
       } else {
         console.log('ℹ Chat history may not be immediately visible or has different structure');

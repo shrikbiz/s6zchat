@@ -16,7 +16,7 @@ async function testSettings() {
     
     // First, open the sidebar
     console.log('Opening sidebar...');
-    const menuButton = await page.locator('[data-testid="menu"], .mini-nav-button, button[aria-label*="menu"]').first();
+    const menuButton = await page.locator('[data-testid="menu-toggle-button"]');
     await menuButton.click();
     
     // Wait for sidebar to open
@@ -24,7 +24,7 @@ async function testSettings() {
     
     // Look for settings button in the sidebar footer
     console.log('Looking for settings button...');
-    const settingsButton = await page.locator('text="Settings", [data-testid="settings"], button[aria-label*="settings"], .settings-button').first();
+    const settingsButton = await page.locator('[data-testid="settings"]');
     
     if (await settingsButton.isVisible()) {
       console.log('✓ Settings button found');
@@ -56,15 +56,23 @@ async function testSettings() {
         console.log('Closing settings...');
         
         // Look for close button (X, Cancel, Close, etc.)
-        const closeButton = await page.locator('.MuiDialog-root button[aria-label*="close"], .MuiModal-root button[aria-label*="close"], text="Close", text="Cancel", button[data-testid="close-settings"]').first();
+        let closeButton = await page.locator('[data-testid="close-settings"]').first();
+        
+        if (!(await closeButton.isVisible())) {
+          closeButton = await page.locator('text="Close"').first();
+        }
+        
+        if (!(await closeButton.isVisible())) {
+          closeButton = await page.locator('text="Cancel"').first();
+        }
         
         if (await closeButton.isVisible()) {
           await closeButton.click();
           console.log('✓ Clicked close button');
         } else {
-          // Try clicking outside the modal to close it
-          await page.locator('body').click({ position: { x: 50, y: 50 } });
-          console.log('✓ Clicked outside modal to close');
+          // Try pressing Escape key to close modal
+          await page.keyboard.press('Escape');
+          console.log('✓ Pressed Escape to close modal');
         }
         
         // Wait for modal to close

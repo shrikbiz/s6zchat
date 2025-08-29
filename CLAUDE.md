@@ -14,6 +14,9 @@ S6ZChat is a React-based chat application supporting multiple AI providers (Open
 - `npm test` - Run tests in watch mode
 - `npm run setup-env` - Create .env file with default configuration
 
+### End-to-End Testing
+- `node e2e-tests/playwright-test.js` - Run Playwright E2E test for chat functionality
+
 ### Environment Setup
 Run `npm run setup-env` to automatically create a `.env` file with required variables:
 - `REACT_APP_OPENAI_API_KEY` - OpenAI API key
@@ -54,3 +57,129 @@ ChatDB stores conversations with:
 - `chatName`: Generated conversation title
 - `chatItem`: Array of message objects with role/content
 - `createdOn`: Timestamp for sorting
+
+## Testing
+
+S6ZChat includes comprehensive testing coverage with both unit tests and end-to-end tests.
+
+### Unit Testing with Jest & React Testing Library
+
+**Test Coverage:**
+- ✅ **App.js**: Router configuration and navigation
+- ✅ **API Layer**: Configuration, request handling, and model routing
+- ✅ **ChatDB**: Database operations, CRUD operations, and search functionality
+- ✅ **Components**: TextEditor, ModelSelector, Welcome screen
+- ✅ **Configuration**: Environment variables and validation
+
+**Key Test Files:**
+- `src/__tests__/App.test.js` - Main app routing tests
+- `src/Components/API/__tests__/` - API layer tests (config.test.js, index.test.js)
+- `src/Components/ChatDB/__tests__/index.test.js` - Database operations
+- `src/Components/TextEditor/__tests__/index.test.js` - Text input and interactions
+- `src/Components/ModelSelector/__tests__/index.test.js` - Model switching
+- `src/Components/Welcome/__tests__/index.test.js` - Welcome screen with loading states
+- `src/Components/__tests__/config.test.js` - Configuration and environment variables
+
+**Running Unit Tests:**
+```bash
+# Run all unit tests
+npm test
+
+# Run with coverage report
+npm test -- --coverage
+
+# Run specific test file
+npm test -- src/Components/Welcome/__tests__/index.test.js
+
+# Run tests in watch mode
+npm test -- --watch
+```
+
+### E2E Testing with Playwright
+
+**Prerequisites:**
+- Development server running on `localhost:3000`
+- Playwright installed (`npm install --save-dev playwright`)
+- Chromium browser installed (`npx playwright install chromium`)
+
+**Available E2E Tests:**
+
+1. `e2e-tests/playwright-test.js`: Basic chat interaction test
+   - Opens browser to localhost:3000
+   - Enters a prompt in the text editor
+   - Submits the prompt and waits for AI response  
+   - Takes full-page screenshot of the result
+   - Saves screenshot with timestamp in `.e2e-screenshots/`
+
+2. `e2e-tests/side-menu-test.js`: Side menu verification test
+   - Opens the sidebar navigation
+   - Verifies presence of required menu items (New chat, Search, Chats section)
+   - Checks for settings button
+   - Takes screenshot of open sidebar
+
+3. `e2e-tests/chat-history-test.js`: Chat history functionality test
+   - Creates a new chat with a unique prompt
+   - Waits for AI response (10 seconds)
+   - Opens sidebar to verify chat appears in history
+   - Tests clicking on chat history items
+   - Verifies chat persistence
+
+4. `e2e-tests/model-switching-test.js`: Model switching test
+   - Locates the model selector dropdown
+   - Tests switching between OpenAI and Ollama models
+   - Verifies model selection changes
+   - Takes screenshots of dropdown options
+
+5. `e2e-tests/settings-test.js`: Settings menu test
+   - Opens sidebar and locates settings button
+   - Opens settings modal/dialog
+   - Tests closing settings modal
+   - Verifies settings accessibility
+
+**Running E2E Tests:**
+```bash
+# Ensure dev server is running
+npm start
+
+# Run individual E2E tests
+node e2e-tests/playwright-test.js
+node e2e-tests/side-menu-test.js
+node e2e-tests/chat-history-test.js
+node e2e-tests/model-switching-test.js
+node e2e-tests/settings-test.js
+
+# Run all E2E tests sequentially
+node e2e-tests/run-all-tests.js
+```
+
+### Comprehensive Test Runner
+
+**Run All Tests (Unit + E2E):**
+```bash
+# Run comprehensive test suite
+node scripts/run-all-tests.js
+```
+
+This script will:
+- ✅ Check prerequisites (Node.js, npm, Playwright)
+- ✅ Run all unit tests with coverage
+- ✅ Verify development server is running
+- ✅ Execute all E2E tests sequentially
+- ✅ Provide detailed summary with pass/fail counts
+- ✅ Generate screenshots for E2E tests (saved in `.e2e-screenshots/`)
+
+**Test Structure:**
+```
+src/
+├── __tests__/              # App-level tests
+│   └── App.test.js
+├── Components/
+│   ├── API/__tests__/       # API layer tests
+│   ├── ChatDB/__tests__/    # Database tests
+│   ├── TextEditor/__tests__/ # Component tests
+│   ├── Welcome/__tests__/   # Component tests
+│   └── __tests__/          # Shared component tests
+e2e-tests/                  # End-to-end tests
+scripts/                    # Test utilities
+└── run-all-tests.js       # Comprehensive test runner
+```

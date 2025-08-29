@@ -8,6 +8,9 @@
 # testing
 /coverage
 
+# E2E test screenshots
+.e2e-screenshots/
+
 # production
 /build
 

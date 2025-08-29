@@ -35,7 +35,8 @@
     "build": "react-app-rewired build",
     "test": "react-app-rewired test",
     "eject": "react-scripts eject",
-    "setup-env": "node setup-env.js"
+    "setup-env": "node setup-env.js",
+    "test-and-build": "node scripts/test-and-build.js"
   },
   "eslintConfig": {
     "extends": [
@@ -54,5 +55,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "playwright": "^1.55.0"
   }
 }
